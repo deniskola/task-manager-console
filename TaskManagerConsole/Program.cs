@@ -26,6 +26,12 @@ class Program
                 case "done":
                     CompleteTask();
                     break;
+                case "remove":
+                    RemoveTask();
+                    break;
+                case "clear":
+                    ClearTasks();
+                    break;
                 case "save":
                     SaveTasks();
                     break;
@@ -77,6 +83,26 @@ class Program
         {
             Console.WriteLine("Invalid task number");
         }
+    }
+
+    static void RemoveTask()
+    {
+        Console.WriteLine("Enter task number to remove: ");
+        if(int.TryParse(Console.ReadLine(), out int index) && index <= tasks.Count)
+        {
+            tasks.RemoveAt(index - 1);
+            Console.WriteLine("Task removed");
+        }
+        else
+        {
+            Console.WriteLine("Invalid task number");
+        }
+    }
+
+    static void ClearTasks()
+    {
+        tasks.Clear();
+        Console.WriteLine("All tasks cleared");
     }
 
     static void SaveTasks()
