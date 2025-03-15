@@ -17,6 +17,12 @@ class Program
 
             switch (command) 
             {
+                case "add":
+                    AddTask();
+                    break;
+                case "save":
+                    SaveTasks();
+                    break;
                 case "load":
                     LoadTasks();
                     break;
@@ -25,6 +31,23 @@ class Program
                     break;
             }
         }
+    }
+
+    static void AddTask()
+    {
+        Console.Write("Enter task description: ");
+        string? description = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            tasks.Add(new TaskItem { Description = description, IsCompleted = false });
+            Console.WriteLine("Task added");
+        }
+    }
+
+    static void SaveTasks()
+    {
+        File.WriteAllText(SaveFile, JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true }));
+        Console.WriteLine("Tasks saved");
     }
 
     static void LoadTasks()
