@@ -20,6 +20,12 @@ class Program
                 case "add":
                     AddTask();
                     break;
+                case "list":
+                    ListTasks();
+                    break;
+                case "done":
+                    CompleteTask();
+                    break;
                 case "save":
                     SaveTasks();
                     break;
@@ -41,6 +47,35 @@ class Program
         {
             tasks.Add(new TaskItem { Description = description, IsCompleted = false });
             Console.WriteLine("Task added");
+        }
+    }
+
+    static void ListTasks()
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("No tasks available!");
+            return;
+        }
+
+        for (int i = 0; i < tasks.Count; i++)
+        {
+            string status = tasks[i].IsCompleted ? "[✔]" : "[]";
+            Console.WriteLine($"{i + 1}. {status} {tasks[i].Description}");
+        }
+    }
+
+    static void CompleteTask()
+    {
+        Console.WriteLine("Enter task number to mark as done: ");
+        if(int.TryParse(Console.ReadLine(), out int index) && index <= tasks.Count)
+        {
+            tasks[index - 1].IsCompleted = true;
+            Console.WriteLine("Task marked as completed");
+        }
+        else
+        {
+            Console.WriteLine("Invalid task number");
         }
     }
 
