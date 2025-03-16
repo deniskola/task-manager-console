@@ -32,6 +32,8 @@ class Program
                 case "clear":
                     ClearTasks();
                     break;
+                case "exit":
+                    return;
                 default:
                     Console.WriteLine("Unknown command. Try again.");
                     break;
