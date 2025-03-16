@@ -32,12 +32,6 @@ class Program
                 case "clear":
                     ClearTasks();
                     break;
-                case "save":
-                    SaveTasks();
-                    break;
-                case "load":
-                    LoadTasks();
-                    break;
                 default:
                     Console.WriteLine("Unknown command. Try again.");
                     break;
@@ -52,6 +46,7 @@ class Program
         if (!string.IsNullOrWhiteSpace(description))
         {
             tasks.Add(new TaskItem { Description = description, IsCompleted = false });
+            SaveTasks();
             Console.WriteLine("Task added");
         }
     }
@@ -77,6 +72,7 @@ class Program
         if(int.TryParse(Console.ReadLine(), out int index) && index <= tasks.Count)
         {
             tasks[index - 1].IsCompleted = true;
+            SaveTasks();
             Console.WriteLine("Task marked as completed");
         }
         else
@@ -91,6 +87,7 @@ class Program
         if(int.TryParse(Console.ReadLine(), out int index) && index <= tasks.Count)
         {
             tasks.RemoveAt(index - 1);
+            SaveTasks();
             Console.WriteLine("Task removed");
         }
         else
@@ -102,6 +99,7 @@ class Program
     static void ClearTasks()
     {
         tasks.Clear();
+        SaveTasks();
         Console.WriteLine("All tasks cleared");
     }
 
