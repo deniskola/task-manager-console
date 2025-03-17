@@ -144,6 +144,11 @@ class Program
         {
             string json = File.ReadAllText(SaveFile);
             tasks = JsonSerializer.Deserialize<List<TaskItem>>(json) ?? new List<TaskItem>();
+            tasks = tasks.OrderBy(t => t.IsCompleted)
+                .ThenByDescending(t => t.Priority == "High")
+                .ThenBy(t => t.DueDate ?? DateTime.MaxValue)
+                .ToList();
+
             Console.WriteLine("📂 Tasks loaded successfully!");
         }
         else
