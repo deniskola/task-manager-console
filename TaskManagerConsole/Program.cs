@@ -48,16 +48,28 @@ class Program
     {
         Console.Write("Enter task description: ");
         string? description = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(description))
-        {
-            tasks.Add(new TaskItem { Description = description, IsCompleted = false });
-            SaveTasks();
-            Console.WriteLine("✅ Task added successfully!");
-        }
-        else
+
+        if (string.IsNullOrWhiteSpace(description))
         {
             Console.WriteLine("⚠️ Task description cannot be empty.");
+            return;
         }
+        
+        Console.Write("Enter due date (yyyy-MM-dd) or leave blank: ");
+        string dueDateInput = Console.ReadLine();
+        DateTime? dueDate = DateTime.TryParse(dueDateInput, out DateTime parsedDate) ? parsedDate : null;
+
+        Console.Write("Enter priority (low, normal, high): ");
+        string priority = Console.ReadLine()?.Trim().ToLower() switch
+        {
+            "low" => "Low",
+            "high" => "High",
+            _ => "Normal" // default
+        };
+
+        tasks.Add(new TaskItem { Description = description, IsCompleted = false, DueDate = dueDate, Priority = priority });
+        SaveTasks();
+        Console.WriteLine("✅ Task added successfully!");
     }
 
     static void ListTasks()
@@ -72,9 +84,16 @@ class Program
         for (int i = 0; i < tasks.Count; i++)
         {
             string status = tasks[i].IsCompleted ? "[✓]" : "[ ]";
-            Console.WriteLine($"{i + 1}. {status} {tasks[i].Description}");
+            string dueDate = tasks[i].DueDate.HasValue ? $"(Due: {tasks[i].DueDate:yyyy-MM-dd})" : "";
+            string priorityColor = tasks[i].Priority switch
+            {
+                "High" => "\x1b[31m", // Red
+                "Low" => "\x1b[32m", // Green
+                _ => "\x1b[33m" // Yellow (Normal)
+            };
+            Console.WriteLine($"{i + 1}. {status} {tasks[i].Description} {dueDate} {priorityColor}[{tasks[i].Priority}]\x1b[0m");
         }
-        Console.WriteLine();
+        Console.WriteLine();    
     }
 
     static void CompleteTask()
